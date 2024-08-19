@@ -7,18 +7,6 @@ public class LandMineCell extends Cell {
 
     public static final String LAND_MINE_SIGN = "☼";
 
-    private boolean isLaneMine;
-
-    @Override
-    public void turnOnLandMine() {
-        this.isLaneMine = true;
-    }
-
-    @Override
-    public void updateNearbyLandMineCount(int count) {
-        throw new UnsupportedOperationException("지원하지 않는 기능입니다.");
-    }
-
     @Override
     public boolean isLandMine() {
         return true;

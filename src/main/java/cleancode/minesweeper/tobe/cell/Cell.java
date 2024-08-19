@@ -11,10 +11,6 @@ public abstract class Cell {
     protected boolean isFlagged;
     protected boolean isOpened;
 
-    public abstract void turnOnLandMine();
-
-    public abstract void updateNearbyLandMineCount(int count);
-
     public abstract boolean isLandMine();
 
     public abstract boolean hasLandMineCount();
