@@ -5,9 +5,10 @@ import cleancode.minesweeper.tobe.io.ConsoleOutputHandler;
 
 public class MineSweeper {
 
-    public static final int BOARD_ROW_SIZE = 8;
-    public static final int BOARD_COL_SIZE = 10;
-    
+    private static final int BOARD_ROW_SIZE = 8;
+    private static final int BOARD_COL_SIZE = 10;
+    private static final char BASE_CHAR_FOR_COL = 'a';
+
     private final GameBoard gameBoard = new GameBoard(BOARD_ROW_SIZE, BOARD_COL_SIZE);
     private final ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
     private final ConsoleOutputHandler consoleOutputHandler = new ConsoleOutputHandler();
@@ -89,28 +90,20 @@ public class MineSweeper {
     }
 
     private int convertColumnFrom(char cellInputCol) {
-        return switch (cellInputCol) {
-            case 'a' -> 0;
-            case 'b' -> 1;
-            case 'c' -> 2;
-            case 'd' -> 3;
-            case 'e' -> 4;
-            case 'f' -> 5;
-            case 'g' -> 6;
-            case 'h' -> 7;
-            case 'i' -> 8;
-            case 'j' -> 9;
-            default -> throw new GameException("잘못된 입력입니다.");
-        };
+        int colIndex = cellInputCol - BASE_CHAR_FOR_COL;
+        if (colIndex < 0) {
+            throw new GameException("잘못된 입력입니다.");
+        }
+        return colIndex;
     }
 
     private int getSelectedRowIndex(String cellInput) {
-        char cellInputRow = cellInput.charAt(1);
+        String cellInputRow = cellInput.substring(1);
         return convertRowFrom(cellInputRow);
     }
 
-    private int convertRowFrom(char cellInputRow) {
-        int rowIndex = Character.getNumericValue(cellInputRow) - 1;
+    private int convertRowFrom(String cellInputRow) {
+        int rowIndex = Integer.parseInt(cellInputRow) - 1;
         if (rowIndex > BOARD_ROW_SIZE) {
             throw new GameException("잘못된 입력입니다.");
         }
@@ -126,8 +119,6 @@ public class MineSweeper {
             changeGameStatusToWin();
         }
     }
-
-
 
     private boolean doesUserChooseToOpenCell(String userActionInput) {
         return userActionInput.equals("1");
