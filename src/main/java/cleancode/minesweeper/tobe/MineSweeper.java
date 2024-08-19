@@ -7,9 +7,10 @@ public class MineSweeper {
 
     private static final int BOARD_ROW_SIZE = 8;
     private static final int BOARD_COL_SIZE = 10;
-    private static final char BASE_CHAR_FOR_COL = 'a';
+
 
     private final GameBoard gameBoard = new GameBoard(BOARD_ROW_SIZE, BOARD_COL_SIZE);
+    private final BoardIndexConverter boardIndexConverter = new BoardIndexConverter();
     private final ConsoleInputHandler consoleInputHandler = new ConsoleInputHandler();
     private final ConsoleOutputHandler consoleOutputHandler = new ConsoleOutputHandler();
     private int gameStatus = 0; // 0: 게임 중, 1: 승리, -1: 패배
@@ -61,8 +62,8 @@ public class MineSweeper {
     }
 
     private void actOnCell(String cellInput, String userActionInput) {
-        int selectedColIndex = getSelectedColIndex(cellInput);
-        int selectedRowIndex = getSelectedRowIndex(cellInput);
+        int selectedColIndex = boardIndexConverter.getSelectedColIndex(cellInput, gameBoard.getColSize());
+        int selectedRowIndex = boardIndexConverter.getSelectedRowIndex(cellInput, gameBoard.getRowSize());
 
         if (doesUserChooseToPlantFlag(userActionInput)) {
             gameBoard.flag(selectedRowIndex, selectedColIndex);
@@ -82,32 +83,6 @@ public class MineSweeper {
             return;
         }
         throw new GameException("잘못된 번호를 선택하셨습니다.");
-    }
-
-    private int getSelectedColIndex(String cellInput) {
-        char cellInputCol = cellInput.charAt(0);
-        return convertColumnFrom(cellInputCol);
-    }
-
-    private int convertColumnFrom(char cellInputCol) {
-        int colIndex = cellInputCol - BASE_CHAR_FOR_COL;
-        if (colIndex < 0) {
-            throw new GameException("잘못된 입력입니다.");
-        }
-        return colIndex;
-    }
-
-    private int getSelectedRowIndex(String cellInput) {
-        String cellInputRow = cellInput.substring(1);
-        return convertRowFrom(cellInputRow);
-    }
-
-    private int convertRowFrom(String cellInputRow) {
-        int rowIndex = Integer.parseInt(cellInputRow) - 1;
-        if (rowIndex > BOARD_ROW_SIZE) {
-            throw new GameException("잘못된 입력입니다.");
-        }
-        return rowIndex;
     }
 
     private boolean doesUserChooseToPlantFlag(String userActionInput) {
