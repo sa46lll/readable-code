@@ -1,6 +1,4 @@
-package cleancode.minesweeper.asis;
-
-import cleancode.minesweeper.tobe.MineSweeper;
+package cleancode.minesweeper.tobe;
 
 public class GameApplication {
 
